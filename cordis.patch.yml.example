@@ -1,0 +1,26 @@
+# dsh-image-relay bundle layer: mount the image-generation tool into the composition.
+# Copy this template to cordis.patch.yml and set baseUrl to YOUR relay endpoint.
+#
+# defaultLocked: true is deliberate. Under PTC mode every VISIBLE tool is
+# projected into the generated `tools:sdk` prompt section, so a globally
+# registered tool would occupy the model's context from turn one. Locked by
+# default keeps it out until the user runs `/image` in a session, which
+# registers the tool into THAT agent's scope only.
+#
+# saveTo is also load-bearing. When the tool returns an image under PTC, DSH
+# re-injects it as a `user/message` sourced from `{kind: 'plugin'}`, and the chat
+# renderer sends every non-`user` source down its injected-context branch, which
+# renders text but never image blocks. Writing the PNG to the workspace makes it
+# reachable regardless of that render path.
+- insert:
+    - id: image-relay
+      name: dsh-image-relay
+      config:
+        enabled: true
+        defaultLocked: true
+        provider: cool-coffee-image
+        apiKeyEnv: COOL_COFFEE_IMAGE_API_KEY
+        baseUrl: https://api.openai.com/v1   # <-- point at your own relay, keep the /v1
+        model: gpt-image-2
+        maxRetries: 4
+        saveTo: temp/imagegen

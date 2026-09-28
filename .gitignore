@@ -1,0 +1,17 @@
+# Local-only: this bundle layer carries THIS machine's relay endpoint.
+# Copy the tracked template instead:  cp cordis.patch.yml.example cordis.patch.yml
+cordis.patch.yml
+
+# Build output — a byte-identical mirror of src/, never edit it by hand.
+dist/
+
+# Sandbox / scratch space
+temp/
+
+# Dependencies
+node_modules/
+
+# OS noise
+.DS_Store
+Thumbs.db
+*.log
